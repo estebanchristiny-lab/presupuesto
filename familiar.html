@@ -138,7 +138,7 @@ input,select,button{font-family:'DM Sans',sans-serif}
     <select class="sel" id="month-sel">
       <option value="0">Enero</option><option value="1">Febrero</option><option value="2">Marzo</option><option value="3">Abril</option><option value="4">Mayo</option><option value="5">Junio</option><option value="6">Julio</option><option value="7">Agosto</option><option value="8">Septiembre</option><option value="9">Octubre</option><option value="10">Noviembre</option><option value="11">Diciembre</option>
     </select>
-    <select class="sel" id="year-sel"><option>2025</option><option>2026</option><option>2027</option><option>2028</option><option>2029</option></select>
+    <select class="sel" id="year-sel"><option>2026</option><option>2027</option><option>2028</option><option>2029</option></select><option>2030</option>
     <button class="save-btn" id="save-btn">💾 Guardar</button>
   </div>
 </div>
@@ -204,7 +204,7 @@ let S={
   cats:DEFAULT_CATS.map(c=>({...c})),
   payments:DEFAULT_PAYS.map(p=>({...p})),
   payStatus:{},transactions:[],analysisResult:null,
-  view:"presupuesto",month:new Date().getMonth(),year:2025,
+  view:"presupuesto",month:new Date().getMonth(),year:2026,
   showAddCat:false,showAddPay:false,analyzing:false,
   newCat:{lbl:"",ico:"📌",cat:"",newCatName:"",showNewCatInput:false},
   newPay:{name:"",amount:0,day:1,cat:"Hogar",ico:"🏠",who:"ambos",months:null}
@@ -377,7 +377,7 @@ function renderTracker(root){
 
 function renderProyeccion(root){
   const{total,per}=comp();
-  const yd=[2025,2026,2027,2028,2029].map((y,i)=>{const inf=Math.pow(1.04,i);return{year:y,total:total*inf*12,per:per*inf*12};});
+  const yd=[2026,2027,2028,2029,2030].map((y,i)=>{const inf=Math.pow(1.04,i);return{year:y,total:total*inf*12,per:per*inf*12};});
   const panel=document.createElement("div");panel.className="card";panel.style.marginBottom="18px";const ph=document.createElement("div");ph.className="card-hdr";ph.innerHTML=`<span>Proyección gastos hogar · inflación 4% anual</span>`;panel.append(ph);
   const tbl=document.createElement("table");tbl.className="proj-table";tbl.innerHTML=`<thead><tr><th>Año</th><th>Total anual hogar</th><th>Parte Esteban</th><th>Parte Andrea</th><th>Por persona / mes</th></tr></thead>`;
   const tb=document.createElement("tbody");yd.forEach(y=>{const tr=document.createElement("tr");tr.innerHTML=`<td>${y.year}</td><td style="color:#f59e0b">${fmt(y.total)}</td><td style="color:#10b981">${fmt(y.per)}</td><td style="color:#8b5cf6">${fmt(y.per)}</td><td style="color:#64748b">${fmt(y.per/12)}</td>`;tb.append(tr);});tbl.append(tb);panel.append(tbl);root.append(panel);
