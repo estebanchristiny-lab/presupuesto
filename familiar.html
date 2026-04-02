@@ -244,6 +244,8 @@ function mkRow(cat,onDel){
 }
 
 function renderPresupuesto(root){
+  const yr=S.year,mo=S.month;
+  const pays=S.payments.filter(p=>!p.months||p.months.includes(mo));
   const{total,per}=comp();
   const g4=document.createElement("div");g4.className="g4";
   [{lbl:"Gasto total hogar",val:fmt(total),color:"#f59e0b",sub:"Suma todos los items"},
@@ -253,6 +255,10 @@ function renderPresupuesto(root){
   ].forEach(k=>{const d=document.createElement("div");d.className="kpi";d.innerHTML=`<div class="kpi-lbl">${k.lbl}</div><div class="kpi-val" style="color:${k.color}">${k.val}</div><div class="kpi-sub">${k.sub}</div>`;g4.append(d);});
   root.append(g4);
 
+  const tabs=document.createElement("div");tabs.className="month-tabs";
+  MA.forEach((m,i)=>{const st=monthStats(yr,i);const b=document.createElement("button");b.className="mtab";if(i===mo)b.classList.add("active");else if(st.total>0&&st.paid===st.total)b.classList.add("done");else if(st.total>0&&st.paid>0)b.classList.add("partial");b.textContent=m;b.onclick=()=>{S.month=i;document.getElementById("month-sel").value=i;render()};tabs.append(b);});
+  root.append(tabs);
+  
   const sp=document.createElement("div");sp.className="split-panel";sp.innerHTML=`<div class="sp-title">División 50/50 — Esteban & Andrea</div>`;
   const grpT={};S.cats.forEach(c=>{if(!grpT[c.cat])grpT[c.cat]=0;grpT[c.cat]+=c.val;});
   Object.entries(grpT).sort((a,b)=>b[1]-a[1]).filter(([,v])=>v>0).forEach(([cat,amt])=>{
